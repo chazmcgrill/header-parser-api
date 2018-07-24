@@ -11,8 +11,12 @@ app.get('/', function(req, res) {
 // request header info and present as json
 app.get('/api/whoami', function(req, res) {
   const header = req.headers;
+  const ipaddress = (req.headers['x-forwarded-for'] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress).split(",")[0];
   const data = {
-    ipaddress: header.host, 
+    ipaddress, 
     language: header['accept-language'].split(',')[0], 
     software: header['user-agent']
   };
